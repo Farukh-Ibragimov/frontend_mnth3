@@ -25,14 +25,54 @@ window.onkeydown = (event) => {
 }
 
 
-let left = 0
+let positionX = 0
+let positionY = 0
+
+const maxParentWidth = parentBlock.offsetWidth - childBlock.offsetWidth
+const maxParentHeight = parentBlock.offsetHeight - childBlock.offsetHeight
+
 const animation = () => {
-    left += 1
-    childBlock.style.left = `${left}px`
-    if (left <= 448) {
-        requestAnimationFrame(animation)
+    if (positionX < maxParentWidth && positionY === 0) {
+        positionX++
+    } else if (positionX >= maxParentWidth && positionY < maxParentHeight) {
+        positionY++
+    } else if (positionX > 0 && positionY >= maxParentHeight) {
+        positionX--
+    } else if (positionX === 0 && positionY > 0) {
+        positionY--
     }
+
+    childBlock.style.left = `${positionX}px`
+    childBlock.style.top = `${positionY}px`
+    requestAnimationFrame(animation)
 }
+
 animation()
+
+//ДЗ 2
+const seconds = document.querySelector('#seconds')
+const start = document.querySelector('#start')
+const stop = document.querySelector('#stop')
+const reset = document.querySelector('#reset')
+let count = 0
+let interval
+start.addEventListener('click', ()=>{
+    if(!interval){
+        interval = setInterval(()=>{
+            count++
+            seconds.innerHTML = `${count}`
+        },1000)
+    }
+})
+function stopCounter() {
+    clearInterval(interval)
+    interval = null
+}
+stop.addEventListener('click',stopCounter)
+reset.addEventListener('click', ()=> {
+    stopCounter()
+    count = 0
+    seconds.innerHTML = `${count}`
+})
 
 
