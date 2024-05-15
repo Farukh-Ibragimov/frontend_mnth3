@@ -44,7 +44,9 @@ const tabCount = tabContentItems.length
 
 const scrollTabContent = ()=>{
     hideTabContent()
-    tabIndex = (tabIndex + 1) % tabCount
+    if (tabIndex < tabCount - 1){
+        tabIndex++
+    }
     showTabContent(tabIndex)
 }
 
