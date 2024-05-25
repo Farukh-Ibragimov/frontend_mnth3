@@ -107,7 +107,7 @@ const card = document.querySelector('.card')
 const btnContainer = document.querySelector('.inner_card_switcher')
 
 let cardId = 1
-const firstId = async () => {
+const firstCard = async () => {
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${cardId}`)
         const data = await response.json()
@@ -120,7 +120,7 @@ const firstId = async () => {
         console.error(error)
     }
 }
-firstId(cardId)
+firstCard(cardId)
 btnContainer.onclick = (event) => {
     if (event.target.tagName.toLowerCase() === 'button') {
         if (event.target.id === 'btn-next') {
@@ -128,6 +128,6 @@ btnContainer.onclick = (event) => {
         } else if (event.target.id === 'btn-prev') {
             cardId > 1 ? cardId-- : cardId = 200
         }
-        firstId(cardId)
+        firstCard(cardId)
     }
 }
