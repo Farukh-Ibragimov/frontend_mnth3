@@ -69,13 +69,10 @@ const usdInput = document.querySelector('#usd')
 const somInput = document.querySelector('#som')
 const euroInput = document.querySelector('#eur')
 const convertor = (element, targetElement, targetElement2) => {
-    element.oninput = () => {
-        const request = new XMLHttpRequest()
-        request.open('GET', '../data/converter.json')
-        request.setRequestHeader('Content-type', 'application/json')
-        request.send()
-        request.onload = () => {
-            const data = JSON.parse(request.response)
+    element.oninput = async () => {
+        try {
+            const response = await fetch("../data/converter.json")
+            const data = await response.json()
             if (element.id === 'som') {
                 targetElement.value = (element.value / data.usd).toFixed(2)
                 targetElement2.value = (element.value / data.euro).toFixed(2)
@@ -89,6 +86,8 @@ const convertor = (element, targetElement, targetElement2) => {
                 targetElement2.value = (element.value * data.euroToDollar).toFixed(2)
             }
             (element.value === '') && (targetElement.value = '', targetElement2.value = '')
+        } catch (error) {
+            console.log(error)
         }
     }
 }
@@ -132,8 +131,37 @@ btnContainer.onclick = (event) => {
     }
 }
 
-fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-    })
+// fetch('https://jsonplaceholder.typicode.com/posts')
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log(data)
+//     })
+
+// WEATHER
+// http://api.openweathermap.org/data/2.5/weather
+// query params = параметры запроса
+
+const citySearchInput = document.querySelector('.cityName')
+const cityName = document.querySelector('.city')
+const cityTemp = document.querySelector('.temp')
+
+
+const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather'
+const API_ID = 'e417df62e04d3b1b111abeab19cea714'
+const citySearch = () => {
+    citySearchInput.oninput = async (event) => {
+        try {
+
+            const response = await fetch(`${BASE_URL}?q=${event.target.value}&appid=${API_ID}`)
+            const data = await response.json()
+            cityName.innerHTML = data.name || 'City is not defined'
+            cityTemp.innerHTML = data.main?.temp ? Math.round(data.main?.temp - 273) + '&deg;C' : '///'
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+citySearch()
+
+// optional chaining - .?
