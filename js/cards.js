@@ -10,6 +10,7 @@ const cardsData = async ()=>{
             card.innerHTML = `
                 <div class="cardImg"><img src="${post.image}" alt="cardImg"></div>
                 <h5>${post.title}</h5>
+                <p>${post.description}</p>
                 `
             cardsBlock.appendChild(card)
         })
